@@ -1,0 +1,1350 @@
+<!DOCTYPE html>
+<html lang="id" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perpus Gratis - Perpustakaan Digital Sains & E-Book Premium</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#ecfeff',
+                            100: '#cffafe',
+                            200: '#a5f3fc',
+                            300: '#67e8f9',
+                            400: '#22d3ee',
+                            500: '#06b6d4',
+                            600: '#0891b2',
+                            700: '#0e7490',
+                            800: '#155e75',
+                            900: '#164e63',
+                            950: '#083344',
+                        },
+                        science: {
+                            bg: '#050811',
+                            card: '#0c1322',
+                            panel: '#152033',
+                            border: '#21324d',
+                            accent: '#38bdf8',
+                            emerald: '#10b981',
+                            purple: '#a855f7',
+                            amber: '#f59e0b'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Merriweather', 'Georgia', 'serif'],
+                        mono: ['Fira Code', 'Monaco', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800;900&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet">
+    <!-- Canvas Confetti for Payment Celebration -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        /* Eye-Comfort Scientific Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #050811;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+            border: 1px solid #0891b2;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #06b6d4;
+        }
+
+        /* Scientific Grid Pattern Background */
+        .science-grid-bg {
+            background-color: #050811;
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(6, 182, 212, 0.18) 0%, transparent 55%),
+                radial-gradient(circle at 85% 85%, rgba(168, 85, 247, 0.12) 0%, transparent 45%),
+                radial-gradient(circle at 15% 75%, rgba(16, 185, 129, 0.1) 0%, transparent 40%),
+                linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 100% 100%, 36px 36px, 36px 36px;
+        }
+
+        /* 3D Scientific Book Card Perspective & Hover */
+        .book-container {
+            perspective: 1200px;
+        }
+        .book-card {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d;
+        }
+        .book-card:hover {
+            transform: translateY(-8px) rotateY(-5deg) rotateX(2deg);
+            box-shadow: -10px 16px 30px rgba(0, 0, 0, 0.8), 0 0 20px rgba(6, 182, 212, 0.25);
+        }
+
+        /* Glowing Border Animations */
+        .cyan-glow {
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.35);
+        }
+        .quantum-glow {
+            box-shadow: 0 0 25px rgba(16, 185, 129, 0.25);
+        }
+
+        /* Watermark Pattern for Security */
+        .watermark-bg {
+            background-image: repeating-linear-gradient(
+                -45deg,
+                rgba(6, 182, 212, 0.025),
+                rgba(6, 182, 212, 0.025) 120px,
+                transparent 120px,
+                transparent 240px
+            );
+        }
+
+        /* Anti-select protection */
+        .no-select {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        /* Scientific Shelf Edge */
+        .science-shelf {
+            background: linear-gradient(180deg, #1e293b 0%, #0c1322 60%, #050811 100%);
+            box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.12), 0 8px 16px rgba(0, 0, 0, 0.9);
+            border-top: 2px solid #0891b2;
+        }
+
+        /* Eye-Comfort Reading Themes */
+        .theme-cosmic {
+            background-color: #080e1a;
+            color: #cbd5e1;
+            border-color: #1e293b;
+        }
+        .theme-slate {
+            background-color: #0f172a;
+            color: #e2e8f0;
+            border-color: #334155;
+        }
+        .theme-sepia {
+            background-color: #f7f0e1;
+            color: #3e2723;
+            border-color: #d7ccc8;
+        }
+        .theme-emerald {
+            background-color: #061a14;
+            color: #d1fae5;
+            border-color: #064e3b;
+        }
+        .theme-light {
+            background-color: #ffffff;
+            color: #1e293b;
+            border-color: #e2e8f0;
+        }
+    </style>
+</head>
+<body class="science-grid-bg text-slate-100 font-sans min-h-screen flex flex-col selection:bg-brand-500 selection:text-slate-950">
+
+    <!-- Header / Navigation Bar -->
+    <header class="sticky top-0 z-40 bg-slate-950/90 backdrop-blur-md border-b border-slate-800/80 shadow-2xl">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+            
+            <!-- Brand Logo & Title -->
+            <div class="flex items-center gap-3 cursor-pointer group" onclick="resetFilters()">
+                <div class="relative">
+                    <img src="155813.jpg" alt="Logo Perpus Gratis" class="w-12 h-12 rounded-full object-cover border-2 border-brand-400 cyan-glow group-hover:scale-105 transition-all duration-300" onerror="this.src='https://placehold.co/100x100/0891b2/ffffff?text=PG'">
+                    <span class="absolute -bottom-1 -right-1 bg-gradient-to-r from-brand-400 to-emerald-400 text-slate-950 text-[9px] font-black px-1.5 py-0.5 rounded-full uppercase shadow tracking-wider">SAINS</span>
+                </div>
+                <div>
+                    <h1 class="text-xl sm:text-2xl font-serif font-black tracking-wide bg-gradient-to-r from-cyan-300 via-brand-400 to-emerald-300 bg-clip-text text-transparent">
+                        PERPUS GRATIS
+                    </h1>
+                    <p class="text-[11px] text-slate-400 hidden sm:block font-medium">Perpustakaan Sains & Digital Knowledge Nusantara</p>
+                </div>
+            </div>
+
+            <!-- Search Bar (Desktop) -->
+            <div class="flex-1 max-w-md hidden md:block">
+                <div class="relative">
+                    <i class="fa-solid fa-atom absolute left-3.5 top-1/2 -translate-y-1/2 text-brand-400 animate-spin-slow"></i>
+                    <input type="text" id="searchInput" oninput="handleSearch()" placeholder="Cari buku sains, riset kuantum, atau penulis..." 
+                           class="w-full bg-slate-900/90 border border-slate-700/80 rounded-full pl-10 pr-12 py-2 text-xs text-slate-200 placeholder-slate-400 focus:outline-none focus:border-brand-400 focus:ring-1 focus:ring-brand-400 transition-all">
+                    <span class="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] text-slate-500 font-mono border border-slate-800 bg-slate-950 px-1.5 py-0.5 rounded">Ctrl+K</span>
+                </div>
+            </div>
+
+            <!-- Header Action Controls -->
+            <div class="flex items-center gap-2 sm:gap-3">
+                
+                <!-- Admin Mode Button -->
+                <button onclick="toggleAdminPanel()" class="px-3 py-1.5 rounded-xl border border-slate-700/80 hover:border-brand-400/60 bg-slate-900/80 hover:bg-slate-800 text-xs text-slate-300 hover:text-brand-300 transition-all flex items-center gap-2 shadow">
+                    <i class="fa-solid fa-user-gear text-brand-400"></i>
+                    <span class="hidden sm:inline font-semibold">Mode Admin</span>
+                </button>
+
+                <!-- Purchased Collection Badge Button -->
+                <button onclick="openPurchasedModal()" class="relative p-2.5 bg-slate-900/90 border border-slate-800 hover:border-brand-500 rounded-xl text-slate-300 hover:text-brand-300 transition-all" title="Koleksi PDF Terunduh Saya">
+                    <i class="fa-solid fa-book-bookmark text-base text-brand-400"></i>
+                    <span id="purchasedBadge" class="absolute -top-1 -right-1 bg-brand-500 text-slate-950 text-[10px] font-black rounded-full w-5 h-5 flex items-center justify-center border-2 border-slate-950 shadow">0</span>
+                </button>
+
+                <!-- Auth Container -->
+                <div id="authContainer">
+                    <button onclick="openAuthModal()" class="bg-gradient-to-r from-brand-500 to-emerald-500 hover:from-brand-600 hover:to-emerald-600 text-slate-950 font-bold px-4 py-2 rounded-full text-xs sm:text-sm flex items-center gap-2 shadow-lg transition-all transform hover:scale-105">
+                        <i class="fa-solid fa-right-to-bracket"></i>
+                        <span>Masuk / Login</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Search Bar (Mobile) -->
+        <div class="px-4 pb-3 md:hidden">
+            <div class="relative">
+                <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                <input type="text" id="mobileSearchInput" oninput="handleSearch(true)" placeholder="Cari judul buku sains gratis..." 
+                       class="w-full bg-slate-900 border border-slate-700 rounded-full pl-10 pr-4 py-2 text-xs text-slate-200 placeholder-slate-400 focus:outline-none focus:border-brand-400">
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Banner Section -->
+    <section class="relative py-10 px-4 sm:px-6 lg:px-8 border-b border-slate-800/80 overflow-hidden">
+        <div class="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-8 relative z-10">
+            
+            <!-- Hero Left Text Content -->
+            <div class="text-center lg:text-left lg:max-w-2xl">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-500/10 border border-brand-500/30 text-brand-300 text-xs font-semibold uppercase tracking-wider mb-4 shadow-sm">
+                    <i class="fa-solid fa-flask text-brand-400"></i> Platform Literasi & Sains Eye-Comfort bebas akses
+                </div>
+                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-serif font-black text-white leading-tight mb-4">
+                    Jelajahi Ilmu & Sains <br class="hidden sm:inline"><span class="bg-gradient-to-r from-cyan-300 via-brand-400 to-emerald-300 bg-clip-text text-transparent">100% Gratis Dibaca</span>.
+                </h2>
+                <p class="text-slate-300 text-xs sm:text-sm leading-relaxed mb-6 font-normal max-w-xl">
+                    Nikmati kenyamanan membaca seluruh isi buku sains, teknologi, psikologi, hingga literatur populer langsung di web reader anti-lelah mata. Untuk mengunduh file PDF original & lisensi cetak offline, cukup bayar <strong class="text-brand-300 font-bold">Rp 25.000 per buku</strong> via QRIS.
+                </p>
+
+                <!-- Eye-Comfort Badges -->
+                <div class="flex flex-wrap justify-center lg:justify-start gap-2.5 text-xs text-slate-300">
+                    <div class="flex items-center gap-2 bg-slate-900/90 px-3.5 py-2 rounded-xl border border-slate-800">
+                        <i class="fa-solid fa-glasses text-emerald-400"></i>
+                        <span>Web Reader <strong>Eye-Comfort Gratis</strong></span>
+                    </div>
+                    <div class="flex items-center gap-2 bg-slate-900/90 px-3.5 py-2 rounded-xl border border-slate-800">
+                        <i class="fa-solid fa-file-pdf text-rose-400"></i>
+                        <span>Download PDF Original <strong>Rp 25.000</strong></span>
+                    </div>
+                    <div class="flex items-center gap-2 bg-slate-900/90 px-3.5 py-2 rounded-xl border border-slate-800">
+                        <i class="fa-solid fa-qrcode text-brand-400"></i>
+                        <span>QRIS Merchant <strong>MBONTOT.QU</strong></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Featured Scientific E-Book Card Spotlight -->
+            <div class="relative group cursor-pointer w-full max-w-sm" onclick="openReader('b1')">
+                <div class="absolute -inset-1 bg-gradient-to-r from-brand-500 via-teal-500 to-emerald-500 rounded-2xl blur opacity-30 group-hover:opacity-75 transition duration-500"></div>
+                <div class="relative bg-slate-900 border border-slate-700/80 rounded-2xl p-4 flex gap-4">
+                    <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=400&q=80" alt="Buku Rekomendasi" class="w-28 h-40 object-cover rounded-xl shadow-md border border-slate-700 flex-shrink-0">
+                    <div class="flex flex-col justify-between py-1 min-w-0">
+                        <div>
+                            <span class="text-[10px] bg-emerald-500/20 text-emerald-300 font-bold px-2 py-0.5 rounded-md inline-block">Rekomendasi Sains</span>
+                            <h3 class="text-xs font-bold text-white mt-1.5 line-clamp-2">Sapiens: Riwayat Singkat Umat Manusia</h3>
+                            <p class="text-[11px] text-slate-400 mt-1 truncate">Yuval Noah Harari</p>
+                        </div>
+                        <div class="mt-3">
+                            <span class="text-[11px] text-brand-300 block font-bold mb-1.5">⭐ 4.9 (18.5k Pembaca)</span>
+                            <button class="w-full bg-gradient-to-r from-brand-500 to-emerald-500 hover:from-brand-600 hover:to-emerald-600 text-slate-950 text-xs font-bold py-2 px-3 rounded-xl transition-all flex items-center justify-center gap-1.5 shadow">
+                                <i class="fa-solid fa-book-open"></i> Baca Gratis Sekarang
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Bookshelf Catalog -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- Category Selector Header -->
+        <div class="flex items-center justify-between flex-wrap gap-4 mb-8 border-b border-slate-800 pb-4">
+            <div class="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none w-full md:w-auto" id="categoryTabs">
+                <button onclick="filterCategory('All')" class="cat-btn active bg-brand-500 text-slate-950 font-bold px-4 py-2 rounded-full text-xs whitespace-nowrap transition-all shadow-md">
+                    Semua Kategori
+                </button>
+                <button onclick="filterCategory('Fisika & Kosmos')" class="cat-btn bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-800 px-4 py-2 rounded-full text-xs whitespace-nowrap transition-all">
+                    Fisika & Kosmos
+                </button>
+                <button onclick="filterCategory('Biologi & Kedokteran')" class="cat-btn bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-800 px-4 py-2 rounded-full text-xs whitespace-nowrap transition-all">
+                    Biologi & Kedokteran
+                </button>
+                <button onclick="filterCategory('Teknologi & AI')" class="cat-btn bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-800 px-4 py-2 rounded-full text-xs whitespace-nowrap transition-all">
+                    Teknologi & AI
+                </button>
+                <button onclick="filterCategory('Psikologi & Kognisi')" class="cat-btn bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-800 px-4 py-2 rounded-full text-xs whitespace-nowrap transition-all">
+                    Psikologi & Kognisi
+                </button>
+                <button onclick="filterCategory('Sastra & Sosiologi')" class="cat-btn bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-800 px-4 py-2 rounded-full text-xs whitespace-nowrap transition-all">
+                    Sastra & Sosiologi
+                </button>
+            </div>
+
+            <div class="text-xs text-slate-400 flex items-center gap-2 font-mono">
+                <i class="fa-solid fa-layer-group text-brand-400"></i>
+                <span>Tersedia: <strong class="text-slate-200" id="totalBookCount">8 Buku</strong></span>
+            </div>
+        </div>
+
+        <!-- Dynamic E-Book Grid -->
+        <div id="booksGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-6 lg:gap-8 mb-12">
+            <!-- Dynamic Content Injected via JS -->
+        </div>
+
+        <!-- Empty State Search Result -->
+        <div id="emptyState" class="hidden text-center py-20">
+            <i class="fa-solid fa-microscope text-5xl text-slate-600 mb-4 animate-bounce"></i>
+            <h3 class="text-lg font-bold text-slate-300">Buku Sains Tidak Ditemukan</h3>
+            <p class="text-xs text-slate-500 mt-1">Gunakan kata kunci sains lainnya atau atur ulang kategori.</p>
+            <button onclick="resetFilters()" class="mt-4 bg-slate-900 hover:bg-slate-800 text-brand-400 text-xs px-4 py-2 rounded-xl border border-slate-700 transition-colors">
+                Tampilkan Semua Koleksi
+            </button>
+        </div>
+    </main>
+
+    <!-- Protected Scientific E-Reader Modal -->
+    <div id="readerModal" class="fixed inset-0 z-50 bg-slate-950/95 hidden flex flex-col no-select transition-all">
+        
+        <!-- Reader Header Navigation -->
+        <div class="bg-slate-900 border-b border-slate-800 px-4 py-3 flex items-center justify-between text-slate-200 shadow-md gap-2">
+            <div class="flex items-center gap-3 min-w-0">
+                <button onclick="closeReader()" class="p-2 hover:bg-slate-800 rounded-xl text-slate-400 hover:text-white transition-colors" title="Keluar">
+                    <i class="fa-solid fa-arrow-left text-lg"></i>
+                </button>
+                <div class="truncate">
+                    <h3 id="readerTitle" class="font-bold text-xs sm:text-sm text-white truncate">Judul Buku Sains</h3>
+                    <p id="readerAuthor" class="text-[11px] text-brand-400 truncate">Penulis Buku</p>
+                </div>
+            </div>
+
+            <!-- Anti-copy badge -->
+            <div class="hidden lg:flex items-center gap-2 px-3 py-1 bg-emerald-500/10 border border-emerald-500/30 rounded-full text-[11px] text-emerald-400">
+                <i class="fa-solid fa-shield-halved"></i>
+                <span>Akses Reading Room • Proteksi Hak Cipta</span>
+            </div>
+
+            <!-- Reader Eye-Comfort Controls -->
+            <div class="flex items-center gap-2">
+                <!-- Eye-Comfort Color Palette Swatches -->
+                <div class="hidden sm:flex items-center gap-1 bg-slate-800/80 p-1 rounded-xl border border-slate-700" title="Mode Warna Kenyamanan Mata">
+                    <button onclick="setReaderTheme('cosmic')" class="w-6 h-6 rounded-md bg-[#080e1a] border border-slate-700 text-[10px]" title="Cosmic Dark (Bebas Silau)"></button>
+                    <button onclick="setReaderTheme('slate')" class="w-6 h-6 rounded-md bg-[#0f172a] border border-slate-600 text-[10px]" title="Deep Slate"></button>
+                    <button onclick="setReaderTheme('sepia')" class="w-6 h-6 rounded-md bg-[#f7f0e1] border border-amber-300 text-[10px]" title="Warm Sepia"></button>
+                    <button onclick="setReaderTheme('emerald')" class="w-6 h-6 rounded-md bg-[#061a14] border border-emerald-700 text-[10px]" title="Emerald Dusk"></button>
+                    <button onclick="setReaderTheme('light')" class="w-6 h-6 rounded-md bg-white border border-slate-300 text-[10px]" title="Light Studio"></button>
+                </div>
+
+                <!-- Font size controls -->
+                <div class="flex items-center gap-1 bg-slate-800/80 p-1 rounded-xl border border-slate-700">
+                    <button onclick="adjustFontSize(-1)" class="w-7 h-7 text-xs font-bold text-slate-300 hover:bg-slate-700 rounded-lg">A-</button>
+                    <button onclick="adjustFontSize(1)" class="w-7 h-7 text-xs font-bold text-slate-300 hover:bg-slate-700 rounded-lg">A+</button>
+                </div>
+
+                <!-- Reader Download Button -->
+                <button id="readerDownloadBtn" onclick="initiateDownloadFromReader()" class="bg-gradient-to-r from-brand-500 to-emerald-500 hover:from-brand-600 hover:to-emerald-600 text-slate-950 font-bold px-3 py-1.5 rounded-xl text-xs flex items-center gap-1.5 shadow">
+                    <i class="fa-solid fa-download"></i>
+                    <span class="hidden sm:inline">Unduh PDF (Rp 25.000)</span>
+                    <span class="sm:hidden">PDF 25k</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Reader Inner Workspace -->
+        <div class="flex-1 flex overflow-hidden relative">
+            
+            <!-- Chapter TOC Sidebar (Desktop) -->
+            <div class="w-64 bg-slate-900/90 border-r border-slate-800 hidden md:block overflow-y-auto p-4">
+                <h4 class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-2">
+                    <i class="fa-solid fa-list-ol text-brand-400"></i> Daftar Bab Buku
+                </h4>
+                <div id="readerChaptersList" class="space-y-1.5">
+                    <!-- Chapters injected dynamically -->
+                </div>
+            </div>
+
+            <!-- E-Book Reading Canvas -->
+            <div class="flex-1 overflow-y-auto p-4 sm:p-8 md:p-12 relative watermark-bg" id="readerPageContainer">
+                
+                <!-- Floating Dynamic Security Watermark -->
+                <div class="absolute inset-0 pointer-events-none flex items-center justify-center opacity-[0.06] select-none overflow-hidden rotate-[-25deg]">
+                    <div id="watermarkText" class="text-xl sm:text-2xl font-black text-brand-400 text-center tracking-widest leading-loose">
+                        PERPUS GRATIS - DIGITAL READER ACCESS<br>DILARANG MEMBAJAK ATAU MENYEBARLUASKAN
+                    </div>
+                </div>
+
+                <!-- Eye-Comfort Paper Container -->
+                <div id="readerPaper" class="max-w-2xl mx-auto theme-cosmic border rounded-2xl p-6 sm:p-10 shadow-2xl relative z-10 transition-colors duration-300">
+                    <div class="flex items-center justify-between border-b border-slate-800/60 pb-4 mb-6">
+                        <span id="readerChapterTitle" class="text-xs font-bold text-brand-400 uppercase tracking-wider">Bab 1</span>
+                        <span id="readerPageNum" class="text-[11px] text-slate-400 font-mono">Bab 1 dari 5</span>
+                    </div>
+
+                    <!-- Paragraph Reading Content -->
+                    <div id="readerTextContent" class="prose max-w-none text-xs sm:text-sm leading-relaxed space-y-4">
+                        <!-- Chapter content injected here -->
+                    </div>
+
+                    <!-- Navigation Footer -->
+                    <div class="mt-10 pt-6 border-t border-slate-800/60 flex items-center justify-between">
+                        <button id="prevChapterBtn" onclick="navigateChapter(-1)" class="bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold px-4 py-2 rounded-xl flex items-center gap-2 disabled:opacity-40 transition-colors">
+                            <i class="fa-solid fa-chevron-left"></i> Bab Sebelumnya
+                        </button>
+                        <button id="nextChapterBtn" onclick="navigateChapter(1)" class="bg-brand-500 hover:bg-brand-600 text-slate-950 font-bold text-xs px-4 py-2 rounded-xl flex items-center gap-2 transition-all shadow">
+                            Bab Selanjutnya <i class="fa-solid fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- QRIS Payment Modal (MBONTOT.QU) -->
+    <div id="qrisModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+            
+            <button onclick="closeQrisModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <!-- Modal Header -->
+            <div class="text-center mb-4">
+                <span class="bg-brand-500/10 text-brand-300 border border-brand-500/30 text-[10px] font-bold px-3 py-1 rounded-full uppercase">
+                    Lisensi PDF Original & Hak Cipta
+                </span>
+                <h3 class="text-lg font-bold text-white mt-2">Selesaikan Pembayaran QRIS</h3>
+                <p class="text-xs text-slate-400 mt-0.5">Unduh file PDF utuh tanpa watermark & lisensi offline</p>
+            </div>
+
+            <!-- Book Purchase Item Card -->
+            <div class="bg-slate-800/80 rounded-xl p-3 border border-slate-700 flex items-center gap-3 mb-4">
+                <img id="qrisBookCover" src="" alt="Cover" class="w-12 h-16 object-cover rounded shadow border border-slate-700">
+                <div class="flex-1 min-w-0">
+                    <h4 id="qrisBookTitle" class="text-xs font-bold text-white truncate">Judul Buku</h4>
+                    <p id="qrisBookAuthor" class="text-[11px] text-slate-400">Penulis</p>
+                    <p class="text-xs text-brand-400 font-bold mt-1">Total Biaya: Rp 25.000</p>
+                </div>
+            </div>
+
+            <!-- Display Image QRIS (156650.png) -->
+            <div class="bg-white p-4 rounded-2xl flex flex-col items-center justify-center border-2 border-brand-500/50 shadow-inner mb-4">
+                <img id="qrisImage" src="156650.png" alt="QRIS MBONTOT.QU" class="w-60 h-auto object-contain rounded shadow-sm" onerror="this.src='https://placehold.co/300x400/00a5e5/ffffff?text=QRIS+MBONTOT.QU+25.000'">
+                <p class="text-slate-900 text-xs font-bold mt-2.5">Merchant: <span class="text-blue-600">MBONTOT.QU</span></p>
+                <p class="text-slate-500 text-[10px]">NMID: ID1025385624537 • Dicetak oleh: 93600914</p>
+            </div>
+
+            <!-- Confirmation Form -->
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-xs font-medium text-slate-300 mb-1">Nama / Email Pembuat Pesanan</label>
+                    <input type="text" id="payerInfo" placeholder="Contoh: Dr. Herman (herman@gmail.com)" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-brand-400">
+                </div>
+
+                <button onclick="confirmPaymentInstant()" class="w-full bg-gradient-to-r from-brand-500 to-emerald-500 hover:from-brand-600 hover:to-emerald-600 text-slate-950 font-bold py-2.5 px-4 rounded-xl text-xs flex items-center justify-center gap-2 shadow-lg transition-all">
+                    <i class="fa-solid fa-circle-check text-sm"></i>
+                    <span>Konfirmasi Pembayaran Instant</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Auth Modal -->
+    <div id="authModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-sm w-full p-6 shadow-2xl relative">
+            <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="text-center mb-6">
+                <img src="155813.jpg" alt="Logo Perpus Gratis" class="w-16 h-16 rounded-full object-cover border-2 border-brand-400 mx-auto cyan-glow mb-2" onerror="this.src='https://placehold.co/100x100/0891b2/ffffff?text=PG'">
+                <h3 class="text-xl font-bold text-white">Masuk Akun Perpus Gratis</h3>
+                <p class="text-xs text-slate-400 mt-1">Simpan koleksi terunduh & penanda halaman bacaan</p>
+            </div>
+
+            <div class="space-y-3">
+                <button onclick="loginWithGoogle()" class="w-full bg-white hover:bg-slate-100 text-slate-800 font-semibold py-2.5 px-4 rounded-xl text-xs flex items-center justify-center gap-3 shadow transition-all">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24">
+                        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+                    </svg>
+                    <span>Lanjutkan dengan Akun Google</span>
+                </button>
+
+                <div class="relative my-4">
+                    <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-slate-800"></div></div>
+                    <div class="relative flex justify-center text-[10px] uppercase"><span class="bg-slate-900 px-2 text-slate-500">Atau Alamat Email</span></div>
+                </div>
+
+                <div>
+                    <label class="block text-xs text-slate-400 mb-1">Email Anda</label>
+                    <input type="email" id="authEmailInput" placeholder="pembaca@sains.id" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-brand-400">
+                </div>
+                <button onclick="loginWithEmail()" class="w-full bg-slate-800 hover:bg-slate-700 text-brand-300 border border-slate-700 font-bold py-2.5 px-4 rounded-xl text-xs transition-all">
+                    Masuk dengan Email
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- My Unlocked E-Books Modal -->
+    <div id="purchasedModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl relative">
+            <button onclick="closePurchasedModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="flex items-center gap-3 mb-4">
+                <div class="p-2.5 bg-brand-500/20 text-brand-400 rounded-xl border border-brand-500/30">
+                    <i class="fa-solid fa-box-archive text-xl"></i>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold text-white">Koleksi PDF Terunduh Saya</h3>
+                    <p class="text-xs text-slate-400">Daftar buku yang telah Anda beli akses file PDF originalnya</p>
+                </div>
+            </div>
+
+            <div id="purchasedList" class="space-y-3 max-h-80 overflow-y-auto pr-1">
+                <!-- Dynamic Content -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Panel Modal -->
+    <div id="adminModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-3xl w-full p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+            <button onclick="closeAdminModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="flex items-center gap-3 mb-6 border-b border-slate-800 pb-4">
+                <div class="p-3 bg-brand-500 text-slate-950 rounded-xl font-bold">
+                    <i class="fa-solid fa-user-shield text-xl"></i>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-white">Panel Administrasi Perpus Gratis</h3>
+                    <p class="text-xs text-slate-400">Manajemen transaksi QRIS MBONTOT.QU, laporan download & kelola buku</p>
+                </div>
+            </div>
+
+            <!-- Stats Overview -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+                <div class="bg-slate-800/80 p-4 rounded-xl border border-slate-700/80">
+                    <span class="text-slate-400 text-xs block mb-1">Total Pendapatan QRIS</span>
+                    <h4 id="adminTotalRevenue" class="text-xl font-black text-brand-400">Rp 125.000</h4>
+                </div>
+                <div class="bg-slate-800/80 p-4 rounded-xl border border-slate-700/80">
+                    <span class="text-slate-400 text-xs block mb-1">Download PDF Terjual</span>
+                    <h4 id="adminTotalDownloads" class="text-xl font-black text-emerald-400">5 File</h4>
+                </div>
+                <div class="bg-slate-800/80 p-4 rounded-xl border border-slate-700/80">
+                    <span class="text-slate-400 text-xs block mb-1">Merchant QRIS</span>
+                    <h4 class="text-sm font-bold text-sky-400">MBONTOT.QU</h4>
+                </div>
+            </div>
+
+            <!-- Transactions Table -->
+            <h4 class="text-sm font-bold text-white mb-3 flex items-center justify-between">
+                <span>Riwayat Transaksi QRIS Terbaru</span>
+                <span class="text-xs text-slate-400 font-normal">GoPay Merchant</span>
+            </h4>
+            <div class="overflow-x-auto bg-slate-800/50 rounded-xl border border-slate-800 mb-6">
+                <table class="w-full text-left text-xs text-slate-300">
+                    <thead class="bg-slate-800 text-slate-400 uppercase font-semibold">
+                        <tr>
+                            <th class="p-3">Waktu</th>
+                            <th class="p-3">Pembuat Pesanan</th>
+                            <th class="p-3">Buku</th>
+                            <th class="p-3">Nominal</th>
+                            <th class="p-3">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminTxTable" class="divide-y divide-slate-800">
+                        <!-- Dynamic Transaksi -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Add New Book Action Bar -->
+            <div class="bg-slate-800/60 p-4 rounded-xl border border-slate-800 flex items-center justify-between">
+                <div>
+                    <h5 class="text-xs font-bold text-white">Tambah Koleksi Buku Baru</h5>
+                    <p class="text-[11px] text-slate-400">Input e-book baru ke perpustakaan sains</p>
+                </div>
+                <button onclick="openAddBookModal()" class="bg-brand-500 hover:bg-brand-600 text-slate-950 font-bold px-3 py-2 rounded-xl text-xs flex items-center gap-1.5 shadow">
+                    <i class="fa-solid fa-plus"></i> Tambah Buku
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Book Modal -->
+    <div id="addBookModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+            <button onclick="closeAddBookModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-book-medical text-brand-400"></i> Tambah Judul Buku Sains Baru
+            </h3>
+
+            <form id="addBookForm" onsubmit="submitNewBook(event)" class="space-y-3">
+                <div>
+                    <label class="block text-xs font-medium text-slate-300 mb-1">Judul Buku</label>
+                    <input type="text" id="newBookTitle" required placeholder="Contoh: Kuantum & Misteri Alam Semesta" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-brand-400">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-medium text-slate-300 mb-1">Penulis</label>
+                        <input type="text" id="newBookAuthor" required placeholder="Carl Sagan" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-brand-400">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-300 mb-1">Kategori</label>
+                        <select id="newBookCategory" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-brand-400">
+                            <option value="Fisika & Kosmos">Fisika & Kosmos</option>
+                            <option value="Biologi & Kedokteran">Biologi & Kedokteran</option>
+                            <option value="Teknologi & AI">Teknologi & AI</option>
+                            <option value="Psikologi & Kognisi">Psikologi & Kognisi</option>
+                            <option value="Sastra & Sosiologi">Sastra & Sosiologi</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-slate-300 mb-1">URL Cover Gambar (Image URL)</label>
+                    <input type="url" id="newBookCover" required placeholder="https://images.unsplash.com/photo-..." class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-brand-400">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-slate-300 mb-1">Ringkasan Sinopsis</label>
+                    <textarea id="newBookSynopsis" rows="2" required placeholder="Jelaskan isi singkat buku sains ini..." class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-brand-400"></textarea>
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-slate-300 mb-1">Sampel Isian Bab 1</label>
+                    <textarea id="newBookChapterContent" rows="3" required placeholder="Tuliskan isi teks Bab 1 buku..." class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-brand-400"></textarea>
+                </div>
+
+                <div class="pt-2 flex justify-end gap-2">
+                    <button type="button" onclick="closeAddBookModal()" class="bg-slate-800 text-slate-300 font-bold px-4 py-2 rounded-xl text-xs">Batal</button>
+                    <button type="submit" class="bg-brand-500 hover:bg-brand-600 text-slate-950 font-bold px-4 py-2 rounded-xl text-xs shadow">Simpan & Terbitkan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 border-t border-slate-800/80 py-8 px-4 sm:px-6 lg:px-8 text-slate-400 text-xs mt-auto">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-2">
+                <img src="155813.jpg" alt="Logo" class="w-6 h-6 rounded-full border border-brand-400" onerror="this.src='https://placehold.co/100x100/0891b2/ffffff?text=PG'">
+                <span class="font-bold text-slate-200">Perpus Gratis</span>
+                <span>— Platform Perpustakaan Digital Sains Indonesia</span>
+            </div>
+            <p>© 2026 Perpus Gratis. Hak Cipta Dilindungi. Baca Bebas Gratis, Download PDF Lisensi Rp 25.000 (Merchant QRIS: MBONTOT.QU).</p>
+        </div>
+    </footer>
+
+    <script>
+        // MOCK DATABASE BUKU SAINS
+        let sampleBooks = [
+            {
+                id: 'b1',
+                title: 'Sapiens: Riwayat Singkat Umat Manusia',
+                author: 'Yuval Noah Harari',
+                category: 'Fisika & Kosmos',
+                rating: '4.9',
+                reads: '18.5k',
+                pages: 512,
+                coverUrl: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=400&q=80',
+                pdfSize: '15.1 MB',
+                synopsis: 'Jelajah sejarah bagaimana spesies Homo sapiens mendominasi planet bumi melalui revolusi kognitif, pertanian, dan sains.',
+                chapters: [
+                    { title: 'Bab 1: Hewan Yang Tidak Penting', content: 'Seratus ribu tahun lalu, ada setidaknya enam spesies manusia menghuni bumi. Namun hari ini hanya tersisa satu: Homo sapiens. Apakah rahasia dominasi spesies kita? Jawabannya terletak pada kemampuan menciptakan fiksi bersama dan imajinasi kolektif.' },
+                    { title: 'Bab 2: Pohon Pengetahuan', content: 'Revolusi Kognitif yang terjadi sekitar 70.000 tahun lalu memungkinkan Homo sapiens berkomunikasi dengan struktur bahasa yang sangat rumit, melahirkan budaya, agama, dan kerja sama sosial skala masif.' }
+                ]
+            },
+            {
+                id: 'b2',
+                title: 'Filosofi Teras: Hidup Tenang Tanpa Beban',
+                author: 'Henry Manampiring',
+                category: 'Psikologi & Kognisi',
+                rating: '4.9',
+                reads: '14.2k',
+                pages: 344,
+                coverUrl: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400&q=80',
+                pdfSize: '8.4 MB',
+                synopsis: 'Panduan praktis filosofi Stoisisme kuno untuk merasionalkan emosi, mengatasi kecemasan modern, dan mencapai ketenangan kognitif.',
+                chapters: [
+                    { title: 'Bab 1: Dikotomi Kendali Pikiran', content: 'Stoisisme membagi kehidupan menjadi dua arena: Hal-hal yang berada di bawah kendali kita (pikiran, tindakan, respon) dan hal-hal di luar kendali kita. Ketenangan sejati diperoleh ketika kita berhenti memusingkan apa yang tak bisa kita kendalikan.' },
+                    { title: 'Bab 2: Mengelola Emosi Negatif', content: 'Emosi tidak terbit langsung dari peristiwa luar, melainkan dari interpretasi logis atau persepsi yang kita berikan pada peristiwa tersebut.' }
+                ]
+            },
+            {
+                id: 'b3',
+                title: 'Atomic Habits: Perubahan Kecil Hasil Luar Biasa',
+                author: 'James Clear',
+                category: 'Psikologi & Kognisi',
+                rating: '4.9',
+                reads: '21.0k',
+                pages: 320,
+                coverUrl: 'https://images.unsplash.com/photo-1589829085413-56de8ae18c73?w=400&q=80',
+                pdfSize: '10.2 MB',
+                synopsis: 'Sains di balik pembentukan kebiasaan manusia dan metode merubah perilaku sebesar 1% setiap hari.',
+                chapters: [
+                    { title: 'Bab 1: Kekuatan Dahsyat Perubahan 1%', content: 'Perbaikan 1% setiap hari selama satu tahun akan membuat Anda 37 kali lipat lebih baik. Kebiasaan adalah bunga majemuk dari perbaikan diri.' }
+                ]
+            },
+            {
+                id: 'b4',
+                title: 'Kecerdasan Buatan & Masa Depan Manusia',
+                author: 'Dr. Alan Turing',
+                category: 'Teknologi & AI',
+                rating: '4.8',
+                reads: '16.7k',
+                pages: 280,
+                coverUrl: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400&q=80',
+                pdfSize: '9.8 MB',
+                synopsis: 'Eksplorasi mendalam algoritma jaringan saraf tiruan (neural networks) dan dampaknya terhadap peradaban.',
+                chapters: [
+                    { title: 'Bab 1: Fajar Pembelajaran Mesin', content: 'Bisakah mesin berpikir? Pertanyaan sederhana ini memicu revolusi komputasi yang hari ini mengubah seluruh aspek kehidupan manusia modern.' }
+                ]
+            },
+            {
+                id: 'b5',
+                title: 'Genom: Otobiografi Spesies Manusia',
+                author: 'Matt Ridley',
+                category: 'Biologi & Kedokteran',
+                rating: '5.0',
+                reads: '12.3k',
+                pages: 410,
+                coverUrl: 'https://images.unsplash.com/photo-1530026405186-ed1f139313f8?w=400&q=80',
+                pdfSize: '11.5 MB',
+                synopsis: 'Peta 23 pasang kromosom manusia dan rahasia cetak biru DNA pembentuk kehidupan.',
+                chapters: [
+                    { title: 'Bab 1: Kromosom 1 - Kehidupan', content: 'Satu molekul asam nukleat menyimpan memori evolusi miliaran tahun dari organisme sel tunggal hingga manusia modern.' }
+                ]
+            },
+            {
+                id: 'b6',
+                title: 'Bumi Manusia: Tetralogi Buru Pertama',
+                author: 'Pramoedya Ananta Toer',
+                category: 'Sastra & Sosiologi',
+                rating: '5.0',
+                reads: '25.3k',
+                pages: 535,
+                coverUrl: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=400&q=80',
+                pdfSize: '14.5 MB',
+                synopsis: 'Kisah perjuangan Minke, pemuda pribumi terpelajar dalam menghadapi hegemoni diskriminasi kolonial.',
+                chapters: [
+                    { title: 'Bab 1: Langkah Pertama Minke', content: 'Dunia berputar dan zaman berubah. Seorang terpelajar harus sudah berbuat adil sejak dalam pikiran, apalagi dalam perbuatan.' }
+                ]
+            },
+            {
+                id: 'b7',
+                title: 'Cosmos: Penjelajahan Alam Semesta',
+                author: 'Carl Sagan',
+                category: 'Fisika & Kosmos',
+                rating: '4.9',
+                reads: '19.8k',
+                pages: 396,
+                coverUrl: 'https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?w=400&q=80',
+                pdfSize: '13.1 MB',
+                synopsis: 'Eksplorasi ilmiah tentang miliaran galaksi, bintang, planet, dan asal-usul kehidupan sains di kosmos.',
+                chapters: [
+                    { title: 'Bab 1: Tepian Lautan Kosmik', content: 'Kosmos adalah segala yang ada, yang pernah ada, atau yang akan ada. Perenungan kita tentang kosmos menggugah jiwa kita.' }
+                ]
+            },
+            {
+                id: 'b8',
+                title: 'Dunia Sophie: Sejarah Filsafat Dunia',
+                author: 'Jostein Gaarder',
+                category: 'Sastra & Sosiologi',
+                rating: '4.8',
+                reads: '11.4k',
+                pages: 598,
+                coverUrl: 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=400&q=80',
+                pdfSize: '16.0 MB',
+                synopsis: 'Petualangan misterius seorang gadis muda menelusuri sejarah pemikiran para filsuf dari masa ke masa.',
+                chapters: [
+                    { title: 'Bab 1: Pertanyaan Misterius', content: 'Siapakah engkau? Sophie menemukan surat misterius yang membuka wawasannya tentang hakikat keberadaan manusia.' }
+                ]
+            }
+        ];
+
+        // GLOBAL STATE
+        let currentUser = null;
+        let currentCategory = 'All';
+        let searchQuery = '';
+        let currentReaderBook = null;
+        let currentChapterIndex = 0;
+        let readerFontSize = 15;
+        let purchasedBookIds = JSON.parse(localStorage.getItem('perpus_purchased_ids') || '[]');
+        
+        let transactions = [
+            { id: 'TX-9021', user: 'herman.sains@gmail.com', bookTitle: 'Sapiens: Riwayat Singkat', amount: 'Rp 25.000', time: '5 Mins Lalu', status: 'Lunas' },
+            { id: 'TX-9022', user: 'anisa.psikologi@yahoo.com', bookTitle: 'Filosofi Teras', amount: 'Rp 25.000', time: '40 Mins Lalu', status: 'Lunas' }
+        ];
+
+        // INITIALIZATION
+        document.addEventListener('DOMContentLoaded', () => {
+            renderBooks();
+            setupAntiCopySecurity();
+            checkAutoUserSession();
+            updatePurchasedBadge();
+        });
+
+        function renderBooks() {
+            const grid = document.getElementById('booksGrid');
+            const emptyState = document.getElementById('emptyState');
+            grid.innerHTML = '';
+
+            let filtered = sampleBooks.filter(book => {
+                const matchCat = currentCategory === 'All' || book.category === currentCategory;
+                const matchSearch = book.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                                    book.author.toLowerCase().includes(searchQuery.toLowerCase());
+                return matchCat && matchSearch;
+            });
+
+            document.getElementById('totalBookCount').innerText = `${filtered.length} Buku`;
+
+            if (filtered.length === 0) {
+                grid.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            grid.classList.remove('hidden');
+            emptyState.classList.add('hidden');
+
+            filtered.forEach(book => {
+                const isUnlocked = purchasedBookIds.includes(book.id);
+                const bookEl = document.createElement('div');
+                bookEl.className = 'book-container flex flex-col justify-between';
+                
+                bookEl.innerHTML = `
+                    <div class="book-card bg-slate-900 border border-slate-800 rounded-2xl p-3 flex flex-col h-full hover:border-brand-400/60 transition-all shadow-lg">
+                        
+                        <!-- Book Cover Image -->
+                        <div class="relative overflow-hidden rounded-xl mb-3 group">
+                            <img src="${book.coverUrl}" alt="${book.title}" class="w-full h-52 sm:h-60 object-cover rounded-xl transform group-hover:scale-105 transition-transform duration-300">
+                            
+                            <!-- Read Tag -->
+                            <span class="absolute top-2 left-2 bg-emerald-600/90 backdrop-blur text-white font-extrabold text-[9px] px-2 py-0.5 rounded-md shadow uppercase tracking-wider">
+                                <i class="fa-solid fa-eye"></i> BACA GRATIS
+                            </span>
+
+                            <!-- Download Status Tag -->
+                            <span class="absolute bottom-2 right-2 ${isUnlocked ? 'bg-brand-500 text-slate-950 font-black' : 'bg-slate-950/80 text-brand-300 border border-brand-500/50'} font-bold text-[9px] px-2 py-0.5 rounded-md backdrop-blur">
+                                ${isUnlocked ? '<i class="fa-solid fa-circle-check"></i> TERUNDUH' : 'PDF Rp 25k'}
+                            </span>
+                        </div>
+
+                        <!-- Book Details -->
+                        <div class="flex-1 flex flex-col justify-between">
+                            <div>
+                                <span class="text-[9px] text-brand-400 font-bold block uppercase tracking-wider">${book.category}</span>
+                                <h4 class="text-xs font-bold text-white line-clamp-2 mt-1" title="${book.title}">${book.title}</h4>
+                                <p class="text-[11px] text-slate-400 mt-0.5 line-clamp-1">${book.author}</p>
+                            </div>
+
+                            <div class="mt-3 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[10px] text-slate-400 font-mono">
+                                <span>⭐ ${book.rating}</span>
+                                <span><i class="fa-solid fa-book-open"></i> ${book.pages} Hlm</span>
+                            </div>
+
+                            <!-- Buttons -->
+                            <div class="mt-3 space-y-1.5">
+                                <button onclick="openReader('${book.id}')" class="w-full bg-slate-800 hover:bg-slate-700 text-brand-300 border border-slate-700 hover:border-brand-400/50 text-xs font-bold py-1.5 px-2 rounded-xl transition-all flex items-center justify-center gap-1.5">
+                                    <i class="fa-solid fa-book-reader text-brand-400"></i> Baca Gratis
+                                </button>
+                                
+                                <button onclick="${isUnlocked ? `downloadUnlockedPDF('${book.id}')` : `openQrisPayment('${book.id}')`}" 
+                                        class="w-full ${isUnlocked ? 'bg-emerald-600 hover:bg-emerald-500 text-white' : 'bg-gradient-to-r from-brand-500 to-emerald-500 hover:from-brand-600 hover:to-emerald-600 text-slate-950'} font-bold text-xs py-1.5 px-2 rounded-xl transition-all flex items-center justify-center gap-1.5 shadow">
+                                    <i class="fa-solid ${isUnlocked ? 'fa-file-arrow-down' : 'fa-qrcode'}"></i>
+                                    <span>${isUnlocked ? 'Download PDF' : 'Download (Rp 25k)'}</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Shelf Edge -->
+                    <div class="science-shelf h-2.5 w-full rounded-b-md mt-2"></div>
+                `;
+                grid.appendChild(bookEl);
+            });
+        }
+
+        function filterCategory(cat) {
+            currentCategory = cat;
+            document.querySelectorAll('#categoryTabs .cat-btn').forEach(btn => {
+                const btnText = btn.innerText.trim();
+                if (btnText === cat || (cat === 'All' && btnText.includes('Semua'))) {
+                    btn.className = 'cat-btn active bg-brand-500 text-slate-950 font-bold px-4 py-2 rounded-full text-xs whitespace-nowrap transition-all shadow-md';
+                } else {
+                    btn.className = 'cat-btn bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-800 px-4 py-2 rounded-full text-xs whitespace-nowrap transition-all';
+                }
+            });
+            renderBooks();
+        }
+
+        function handleSearch(isMobile = false) {
+            const input = isMobile ? document.getElementById('mobileSearchInput') : document.getElementById('searchInput');
+            searchQuery = input.value;
+            renderBooks();
+        }
+
+        function resetFilters() {
+            searchQuery = '';
+            currentCategory = 'All';
+            document.getElementById('searchInput').value = '';
+            document.getElementById('mobileSearchInput').value = '';
+            filterCategory('All');
+        }
+
+        function openReader(bookId) {
+            const book = sampleBooks.find(b => b.id === bookId);
+            if (!book) return;
+
+            currentReaderBook = book;
+            currentChapterIndex = 0;
+
+            document.getElementById('readerTitle').innerText = book.title;
+            document.getElementById('readerAuthor').innerText = `Penulis: ${book.author}`;
+            
+            // Render Chapters list
+            const chapterListEl = document.getElementById('readerChaptersList');
+            chapterListEl.innerHTML = '';
+            book.chapters.forEach((chap, idx) => {
+                const item = document.createElement('button');
+                item.className = `w-full text-left text-xs p-2.5 rounded-xl transition-colors ${idx === 0 ? 'bg-brand-500/20 text-brand-300 font-bold border border-brand-500/30' : 'text-slate-400 hover:bg-slate-800'}`;
+                item.onclick = () => jumpToChapter(idx);
+                item.innerText = chap.title;
+                chapterListEl.appendChild(item);
+            });
+
+            // Set Security Watermark with user email
+            const watermarkEl = document.getElementById('watermarkText');
+            const userEmail = currentUser ? currentUser.email : 'PEMBACA-GUEST@PERPUSGRATIS.ID';
+            watermarkEl.innerHTML = `PERPUS GRATIS - DIBACA OLEH ${userEmail.toUpperCase()}<br>AKSES BACA GRATIS • HAK CIPTA DILINDUNGI`;
+
+            renderChapterContent();
+            document.getElementById('readerModal').classList.remove('hidden');
+        }
+
+        function renderChapterContent() {
+            if (!currentReaderBook) return;
+            const chap = currentReaderBook.chapters[currentChapterIndex];
+            
+            document.getElementById('readerChapterTitle').innerText = chap.title;
+            document.getElementById('readerPageNum').innerText = `Bab ${currentChapterIndex + 1} dari ${currentReaderBook.chapters.length}`;
+            
+            const contentContainer = document.getElementById('readerTextContent');
+            contentContainer.style.fontSize = `${readerFontSize}px`;
+            contentContainer.innerHTML = `<p class="leading-relaxed text-justify">${chap.content}</p>`;
+
+            // Update active TOC item
+            const items = document.querySelectorAll('#readerChaptersList button');
+            items.forEach((btn, idx) => {
+                if (idx === currentChapterIndex) {
+                    btn.className = 'w-full text-left text-xs p-2.5 rounded-xl bg-brand-500/20 text-brand-300 font-bold border border-brand-500/30';
+                } else {
+                    btn.className = 'w-full text-left text-xs p-2.5 rounded-xl text-slate-400 hover:bg-slate-800';
+                }
+            });
+
+            document.getElementById('prevChapterBtn').disabled = currentChapterIndex === 0;
+            document.getElementById('nextChapterBtn').disabled = currentChapterIndex === currentReaderBook.chapters.length - 1;
+        }
+
+        function navigateChapter(dir) {
+            if (!currentReaderBook) return;
+            const newIdx = currentChapterIndex + dir;
+            if (newIdx >= 0 && newIdx < currentReaderBook.chapters.length) {
+                currentChapterIndex = newIdx;
+                renderChapterContent();
+            }
+        }
+
+        function jumpToChapter(index) {
+            currentChapterIndex = index;
+            renderChapterContent();
+        }
+
+        function adjustFontSize(delta) {
+            readerFontSize = Math.min(Math.max(12, readerFontSize + delta), 22);
+            renderChapterContent();
+        }
+
+        function setReaderTheme(themeName) {
+            const paper = document.getElementById('readerPaper');
+            paper.className = `max-w-2xl mx-auto border rounded-2xl p-6 sm:p-10 shadow-2xl relative z-10 transition-colors duration-300 theme-${themeName}`;
+        }
+
+        function closeReader() {
+            document.getElementById('readerModal').classList.add('hidden');
+            currentReaderBook = null;
+        }
+
+        function initiateDownloadFromReader() {
+            if (!currentReaderBook) return;
+            const bookId = currentReaderBook.id;
+            closeReader();
+            if (purchasedBookIds.includes(bookId)) {
+                downloadUnlockedPDF(bookId);
+            } else {
+                openQrisPayment(bookId);
+            }
+        }
+
+        function setupAntiCopySecurity() {
+            document.getElementById('readerModal').addEventListener('contextmenu', (e) => {
+                e.preventDefault();
+                showToast('Klik kanan dimatikan untuk perlindungan hak cipta e-book.', 'warning');
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (document.getElementById('readerModal').classList.contains('hidden')) return;
+
+                if ((e.ctrlKey || e.metaKey) && (e.key === 'c' || e.key === 'p' || e.key === 's' || e.key === 'u')) {
+                    e.preventDefault();
+                    showToast('Penyalinan teks & cetak langsung dimatikan pada E-Reader Gratis.', 'warning');
+                }
+            });
+        }
+
+        let selectedQrisBook = null;
+
+        function openQrisPayment(bookId) {
+            const book = sampleBooks.find(b => b.id === bookId);
+            if (!book) return;
+
+            selectedQrisBook = book;
+            document.getElementById('qrisBookTitle').innerText = book.title;
+            document.getElementById('qrisBookAuthor').innerText = `Penulis: ${book.author}`;
+            document.getElementById('qrisBookCover').src = book.coverUrl;
+
+            if (currentUser) {
+                document.getElementById('payerInfo').value = `${currentUser.name} (${currentUser.email})`;
+            } else {
+                document.getElementById('payerInfo').value = '';
+            }
+
+            document.getElementById('qrisModal').classList.remove('hidden');
+        }
+
+        function closeQrisModal() {
+            document.getElementById('qrisModal').classList.add('hidden');
+            selectedQrisBook = null;
+        }
+
+        function confirmPaymentInstant() {
+            if (!selectedQrisBook) return;
+
+            const payerInfo = document.getElementById('payerInfo').value.trim();
+            if (!payerInfo) {
+                showToast('Harap masukkan Nama/Email pembuat pesanan!', 'warning');
+                return;
+            }
+
+            if (!purchasedBookIds.includes(selectedQrisBook.id)) {
+                purchasedBookIds.push(selectedQrisBook.id);
+                localStorage.setItem('perpus_purchased_ids', JSON.stringify(purchasedBookIds));
+            }
+
+            const newTx = {
+                id: `TX-${Math.floor(1000 + Math.random() * 9000)}`,
+                user: payerInfo,
+                bookTitle: selectedQrisBook.title,
+                amount: 'Rp 25.000',
+                time: 'Baru Saja',
+                status: 'Lunas'
+            };
+            transactions.unshift(newTx);
+
+            confetti({
+                particleCount: 120,
+                spread: 80,
+                origin: { y: 0.6 }
+            });
+
+            closeQrisModal();
+            renderBooks();
+            updatePurchasedBadge();
+            
+            showToast(`Pembayaran QRIS MBONTOT.QU Rp 25.000 Berhasil! File PDF "${selectedQrisBook.title}" Terbuka.`, 'success');
+            
+            setTimeout(() => {
+                downloadUnlockedPDF(selectedQrisBook.id);
+            }, 1000);
+        }
+
+        function downloadUnlockedPDF(bookId) {
+            const book = sampleBooks.find(b => b.id === bookId);
+            if (!book) return;
+
+            showToast(`Mengunduh File PDF Original "${book.title}" (${book.pdfSize})...`, 'info');
+            
+            const dummyContent = `PERPUS GRATIS - DIGITAL LISENSI HAK CIPTA PDF\n\nBuku: ${book.title}\nPenulis: ${book.author}\nKategori: ${book.category}\nStatus: TERDEDIKASI LISENSI RESMI TERBAYAR (Rp 25.000 via MBONTOT.QU QRIS)\n\nTerima kasih telah menghargai hak cipta penulis & mendukung perpustakaan sains digital Perpus Gratis.`;
+            const blob = new Blob([dummyContent], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${book.title.replace(/[^a-zA-Z0-9]/g, '_')}_Original.pdf`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        function checkAutoUserSession() {
+            const savedUser = localStorage.getItem('perpus_user');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                renderAuthUI();
+            }
+        }
+
+        function openAuthModal() {
+            document.getElementById('authModal').classList.remove('hidden');
+        }
+
+        function closeAuthModal() {
+            document.getElementById('authModal').classList.add('hidden');
+        }
+
+        function loginWithGoogle() {
+            currentUser = {
+                name: 'Dr. Budi Santoso',
+                email: 'budi.santoso@sains.id',
+                avatar: '155813.jpg'
+            };
+            localStorage.setItem('perpus_user', JSON.stringify(currentUser));
+            renderAuthUI();
+            closeAuthModal();
+            showToast('Berhasil Masuk Menggunakan Akun Google!', 'success');
+        }
+
+        function loginWithEmail() {
+            const email = document.getElementById('authEmailInput').value.trim();
+            if (!email) {
+                showToast('Masukkan alamat email Anda.', 'warning');
+                return;
+            }
+            currentUser = {
+                name: email.split('@')[0],
+                email: email,
+                avatar: '155813.jpg'
+            };
+            localStorage.setItem('perpus_user', JSON.stringify(currentUser));
+            renderAuthUI();
+            closeAuthModal();
+            showToast(`Selamat Datang, ${currentUser.name}!`, 'success');
+        }
+
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('perpus_user');
+            renderAuthUI();
+            showToast('Anda Telah Keluar dari Akun.', 'info');
+        }
+
+        function renderAuthUI() {
+            const container = document.getElementById('authContainer');
+            if (currentUser) {
+                container.innerHTML = `
+                    <div class="flex items-center gap-2 bg-slate-900/80 p-1.5 pl-3 rounded-full border border-slate-800">
+                        <span class="text-xs font-bold text-brand-300 hidden sm:inline">${currentUser.name}</span>
+                        <img src="${currentUser.avatar}" alt="Avatar" class="w-7 h-7 rounded-full object-cover border border-brand-400" onerror="this.src='https://placehold.co/100x100/0891b2/ffffff?text=U'">
+                        <button onclick="logout()" class="p-1 hover:text-rose-400 text-slate-400 transition-colors" title="Keluar">
+                            <i class="fa-solid fa-right-from-bracket text-xs"></i>
+                        </button>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = `
+                    <button onclick="openAuthModal()" class="bg-gradient-to-r from-brand-500 to-emerald-500 hover:from-brand-600 hover:to-emerald-600 text-slate-950 font-bold px-4 py-2 rounded-full text-xs sm:text-sm flex items-center gap-2 shadow-lg transition-all transform hover:scale-105">
+                        <i class="fa-solid fa-right-to-bracket"></i>
+                        <span>Masuk / Login</span>
+                    </button>
+                `;
+            }
+        }
+
+        function updatePurchasedBadge() {
+            document.getElementById('purchasedBadge').innerText = purchasedBookIds.length;
+        }
+
+        function openPurchasedModal() {
+            const listEl = document.getElementById('purchasedList');
+            listEl.innerHTML = '';
+
+            if (purchasedBookIds.length === 0) {
+                listEl.innerHTML = `
+                    <div class="text-center py-8 text-slate-400 text-xs">
+                        <i class="fa-solid fa-box-open text-3xl mb-2 text-slate-600 block"></i>
+                        Belum ada PDF yang diunduh. Pilihlah buku sains favorit Anda dan dapatkan file PDF senilai Rp 25.000.
+                    </div>
+                `;
+            } else {
+                purchasedBookIds.forEach(id => {
+                    const book = sampleBooks.find(b => b.id === id);
+                    if (!book) return;
+
+                    const item = document.createElement('div');
+                    item.className = 'bg-slate-800/80 p-3 rounded-xl border border-slate-700 flex items-center justify-between gap-3';
+                    item.innerHTML = `
+                        <div class="flex items-center gap-3">
+                            <img src="${book.coverUrl}" class="w-10 h-14 object-cover rounded shadow border border-slate-700">
+                            <div>
+                                <h4 class="text-xs font-bold text-white line-clamp-1">${book.title}</h4>
+                                <p class="text-[10px] text-slate-400">${book.author}</p>
+                                <span class="text-[10px] text-emerald-400 font-semibold"><i class="fa-solid fa-circle-check"></i> Lisensi Terbayar Rp 25.000</span>
+                            </div>
+                        </div>
+                        <button onclick="downloadUnlockedPDF('${book.id}')" class="bg-brand-500 hover:bg-brand-600 text-slate-950 font-bold px-3 py-1.5 rounded-xl text-xs flex items-center gap-1.5 shadow">
+                            <i class="fa-solid fa-download"></i> PDF
+                        </button>
+                    `;
+                    listEl.appendChild(item);
+                });
+            }
+
+            document.getElementById('purchasedModal').classList.remove('hidden');
+        }
+
+        function closePurchasedModal() {
+            document.getElementById('purchasedModal').classList.add('hidden');
+        }
+
+        function toggleAdminPanel() {
+            renderAdminData();
+            document.getElementById('adminModal').classList.remove('hidden');
+        }
+
+        function closeAdminModal() {
+            document.getElementById('adminModal').classList.add('hidden');
+        }
+
+        function renderAdminData() {
+            const table = document.getElementById('adminTxTable');
+            table.innerHTML = '';
+
+            let totalRev = transactions.length * 25000;
+            document.getElementById('adminTotalRevenue').innerText = `Rp ${totalRev.toLocaleString('id-ID')}`;
+            document.getElementById('adminTotalDownloads').innerText = `${transactions.length} File`;
+
+            transactions.forEach(tx => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="p-3 text-slate-400">${tx.time}</td>
+                    <td class="p-3 font-semibold text-white">${tx.user}</td>
+                    <td class="p-3 text-slate-300">${tx.bookTitle}</td>
+                    <td class="p-3 text-brand-400 font-bold">${tx.amount}</td>
+                    <td class="p-3"><span class="bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded text-[10px] font-bold">${tx.status}</span></td>
+                `;
+                table.appendChild(tr);
+            });
+        }
+
+        function openAddBookModal() {
+            document.getElementById('addBookModal').classList.remove('hidden');
+        }
+
+        function closeAddBookModal() {
+            document.getElementById('addBookModal').classList.add('hidden');
+        }
+
+        function submitNewBook(e) {
+            e.preventDefault();
+            const title = document.getElementById('newBookTitle').value.trim();
+            const author = document.getElementById('newBookAuthor').value.trim();
+            const category = document.getElementById('newBookCategory').value;
+            const coverUrl = document.getElementById('newBookCover').value.trim();
+            const synopsis = document.getElementById('newBookSynopsis').value.trim();
+            const chapterContent = document.getElementById('newBookChapterContent').value.trim();
+
+            const newBook = {
+                id: `b${sampleBooks.length + 1}`,
+                title,
+                author,
+                category,
+                rating: '5.0',
+                reads: '1',
+                pages: 250,
+                coverUrl,
+                pdfSize: '12.0 MB',
+                synopsis,
+                chapters: [
+                    { title: 'Bab 1: Pendahuluan', content: chapterContent }
+                ]
+            };
+
+            sampleBooks.unshift(newBook);
+            renderBooks();
+            closeAddBookModal();
+            closeAdminModal();
+            showToast(`Buku Baru "${title}" Berhasil Diterbitkan!`, 'success');
+        }
+
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            
+            let iconClass = 'fa-circle-info text-sky-400';
+            let borderColor = 'border-sky-500/50';
+
+            if (type === 'success') {
+                iconClass = 'fa-circle-check text-emerald-400';
+                borderColor = 'border-emerald-500/50';
+            } else if (type === 'warning') {
+                iconClass = 'fa-triangle-exclamation text-amber-400';
+                borderColor = 'border-amber-500/50';
+            }
+
+            toast.className = `pointer-events-auto bg-slate-900 border ${borderColor} text-slate-200 px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-3 text-xs sm:text-sm animate-bounce duration-300 max-w-sm`;
+            toast.innerHTML = `
+                <i class="fa-solid ${iconClass} text-base"></i>
+                <span class="flex-1 font-medium">${message}</span>
+            `;
+
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'transition-opacity', 'duration-500');
+                setTimeout(() => toast.remove(), 500);
+            }, 3500);
+        }
+    </script>
+</body>
+</html>
